@@ -23,6 +23,8 @@ namespace tasks_week04
         {
             InitializeComponent();
             LoadData();
+            CreateExcel();
+            FormatTable();
 
         }
         private void LoadData()
@@ -33,11 +35,11 @@ namespace tasks_week04
         {
             try
             {
-                
+
                 xlApp = new Excel.Application();
                 xlWB = xlApp.Workbooks.Add(Missing.Value);
                 xlSheet = xlWB.ActiveSheet;
-                //CreateTable(); 
+                CreateTable(); 
                 xlApp.Visible = true;
                 xlApp.UserControl = true;
             }
@@ -53,7 +55,7 @@ namespace tasks_week04
         }
         private void CreateTable()
         {
-            string[] headers = new string[] 
+            string[] headers = new string[]
             {
              "Kód",
              "Eladó",
@@ -68,7 +70,7 @@ namespace tasks_week04
 
             for (int i = 0; i < 9; i++)
             {
-                xlSheet.Cells[1, i+1] = headers[i];
+                xlSheet.Cells[1, i + 1] = headers[i];
             }
 
             object[,] values = new object[Lakasok.Count, headers.Length];
@@ -81,8 +83,41 @@ namespace tasks_week04
                 szamlalo++;
             }
 
+            xlSheet.get_Range(
+             GetCell(2, 1),
+             GetCell(1 + values.GetLength(0), values.GetLength(1))).Value2 = values;
 
+            Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
+            headerRange.Font.Bold = true;
+            headerRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            headerRange.EntireColumn.AutoFit();
+            headerRange.RowHeight = 40;
+            headerRange.Interior.Color = Color.LightBlue;
+            headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
 
+        }
+        private string GetCell(int x, int y)
+        {
+            string ExcelCoordinate = "";
+            int dividend = y;
+            int modulo;
+
+            while (dividend > 0)
+            {
+                modulo = (dividend - 1) % 26;
+                ExcelCoordinate = Convert.ToChar(65 + modulo).ToString() + ExcelCoordinate;
+                dividend = (int)((dividend - modulo) / 26);
+            }
+            ExcelCoordinate += x.ToString();
+
+            return ExcelCoordinate;
+        }
+
+        private void FormatTable()
+        {
+
+            
         }
     }
 }

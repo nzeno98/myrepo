@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using week5.Entities;
+
 
 namespace week5
 {
@@ -65,6 +67,13 @@ namespace week5
                 value += (decimal)last.Price * item.Volume;
             }
             return value;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //Nem nagyon látom át, mi a "Nyereséglista" pontos tartalma...
+            
+
         }
     }
 }

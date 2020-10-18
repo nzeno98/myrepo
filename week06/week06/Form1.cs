@@ -22,17 +22,16 @@ namespace week06
         public Form1()
         {
             InitializeComponent();
-            cucc();
-            dataGridView1.DataSource = Rates;
+            
         }
         public void cucc()
         {
             var mnbService = new MNBArfolyamServiceSoapClient();
             var request = new GetExchangeRatesRequestBody()
             {
-                currencyNames = "EUR",
-                startDate = "2020-01-01",
-                endDate = "2020-06-30"
+                currencyNames = comboBox1.Text,
+                startDate = dateTimePicker1.Value.ToString(),
+                endDate = dateTimePicker2.Value.ToString()
                 
             };
             var response = mnbService.GetExchangeRates(request);
@@ -75,6 +74,30 @@ namespace week06
             chartArea.AxisY.MajorGrid.Enabled = false;
             chartArea.AxisY.IsStartedFromZero = false;
 
+        }
+        public void refreshdata()
+        {
+            Rates.Clear();
+            cucc();
+            dataGridView1.DataSource = Rates;
+            cucc();
+            xmlfeldolgozocucc();
+            fuggvenyke();
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            refreshdata();
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            refreshdata();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            refreshdata();
         }
     }
 }

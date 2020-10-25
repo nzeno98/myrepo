@@ -22,22 +22,12 @@ namespace week07
         public Form1()
         {
             InitializeComponent();
-            for (int year = 2005; year <= 2024; year++)
-            {
-                for (int i = 0; i < Population.Count; i++)
-                {
-                    SimStep(year, Population[i]);
-                }
+            
+            numericUpDown1.Minimum = 2005;
+            numericUpDown1.Maximum = 2099;
+            numericUpDown1.Value = 2020;
 
-                int nbrOfMales = (from x in Population
-                                  where x.Gender == Gender.Male && x.IsAlive
-                                  select x).Count();
-                int nbrOfFemales = (from x in Population
-                                    where x.Gender == Gender.Female && x.IsAlive
-                                    select x).Count();
-                Console.WriteLine(
-                    string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
-            }
+            
         }
 
         public List<Person> GetPopulation(string csvpath)
@@ -108,6 +98,47 @@ namespace week07
                     Population.Add(újszülött);
                 }
             }
+        }
+
+        private void Simulate()
+        {
+            for (int year = 2005; year <= numericUpDown1.Value; year++)
+            {
+                for (int i = 0; i < Population.Count; i++)
+                {
+                    SimStep(year, Population[i]);
+                }
+
+                int nbrOfMales = (from x in Population
+                                  where x.Gender == Gender.Male && x.IsAlive
+                                  select x).Count();
+                int nbrOfFemales = (from x in Population
+                                    where x.Gender == Gender.Female && x.IsAlive
+                                    select x).Count();
+                richTextBox1.Text=(
+                    string.Format("Év:{0}\n Fiúk:{1}\n Lányok:{2}\n\n\n\n", year, nbrOfMales, nbrOfFemales));
+            }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            richTextBox1.Clear();
+            Population.Clear();
+            BirthProbabilities.Clear();
+            DeathProbabilities.Clear();
+            Simulate();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog opf = new OpenFileDialog();
+            opf.ShowDialog();
+            textBox1.Text = DialogResult.ToString();
         }
     }
 }

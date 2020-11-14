@@ -8,27 +8,32 @@ using System.Drawing;
 
 namespace week08.Entities
 {
-    public class Ball : Label
+    public class Ball : Toy
     {
-        public Ball()
+        protected override void DrawImage(Graphics g)
+        {
+            g.FillEllipse(new SolidBrush(Color.Blue), 0, 0, Width, Height);
+        }
+    }
+
+    public abstract class Toy : Label
+    {
+        public Toy()
         {
             AutoSize = false;
             Width = 50;
-            Height = 50;
-            Paint += Ball_Paint;
+            Height = Width;
+            Paint += Toy_Paint;
         }
 
-        private void Ball_Paint(object sender, PaintEventArgs e)
+        private void Toy_Paint(object sender, PaintEventArgs e)
         {
             DrawImage(e.Graphics);
         }
 
-        protected void DrawImage(Graphics g)
-        {
-            g.FillEllipse(new SolidBrush(Color.Blue), 0, 0, Width, Height);
-        }
+        protected abstract void DrawImage(Graphics g);
 
-        public void MoveBall()
+        public virtual void MoveToy()
         {
             Left += 1;
         }
@@ -40,6 +45,15 @@ namespace week08.Entities
         public Ball CreateNew()
         {
             return new Ball();
+        }
+    }
+
+    public class Car : Toy
+    {
+        protected override void DrawImage(Graphics g)
+        {
+            Image imageFile = Image.FromFile("Images/car.png");
+            g.DrawImage(imageFile, new Rectangle(0, 0, Width, Height));
         }
     }
 }

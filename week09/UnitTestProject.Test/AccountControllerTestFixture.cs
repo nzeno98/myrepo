@@ -41,8 +41,8 @@ namespace UnitTestProject.Test
             }
             catch (Exception ex)
             {
-                Assert.IsInstanceOf<ValidationException>(ex);*/
-            }
+                Assert.IsInstanceOf<ValidationException>(ex);
+            }*/
 
         }
     }
